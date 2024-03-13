@@ -6,7 +6,8 @@
  const servicePrice1 = +prompt("Сколько это будет стоить?");
  const service2 = prompt("Какой еще сервис тебе нужен?");
  const servicePrice2 = +prompt("Сколько будет стоить этот второй сервис?");
- const fullPrice = servicePrice1 + servicePrice2;
+ const screenPrice = 12400; // ("цена реализации одного экрана");
+ const fullPrice = screenPrice + servicePrice1 + servicePrice2;
 
 // Вычисляем процент отката и итоговую сумму
 const contractorPercentage = 10;
@@ -38,5 +39,5 @@ if (fullPrice > 50000) {
  console.log (fullPrice);
  console.log ("Итоговая сумма после учета процента отката:", servicePercentPrice);
  console.log(message);
-
+ console.log (typeof screenPrice);
 
