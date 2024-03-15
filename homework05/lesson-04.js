@@ -1,11 +1,11 @@
 // Вопросы по проекту
-const titleProject = prompt("Название проекта?");
-const screensValue = prompt("Какой тип экрана?");
+const titleProject = prompt("Название проекта?").trim();
+const screensValue = prompt("Какой тип экрана?", "Шаблонные, с уникальным дизайном, с анимациями").trim();
 const responsive = confirm("Нужен ли респонсивный сайт?");
-const service1 = prompt("Какой сервис нужен?");
-const servicePrice1 = +prompt("Сколько это будет стоить?");
-const service2 = prompt("Какой еще сервис тебе нужен?");
-const servicePrice2 = +prompt("Сколько будет стоить этот второй сервис?");
+const service1 = prompt("Какой сервис нужен?").trim();
+const servicePrice1 = +prompt("Сколько это будет стоить?").trim();
+const service2 = prompt("Какой еще сервис тебе нужен?").trim();
+const servicePrice2 = +prompt("Сколько будет стоить этот второй сервис?").trim();
 const screenPrice = 12400; // цена реализации одного экрана
 
 // 1. Создаем функцию getAllServicePrices
@@ -13,10 +13,14 @@ const getAllServicePrices = function() {
     return servicePrice1 + servicePrice2;
 };
 
+const allServicePrices = getAllServicePrices();
+
 // 2. Создаем функцию getFullPrice
 function getFullPrice() {
-    return getAllServicePrices() + screenPrice;
+    return allServicePrices + screenPrice;
 }
+
+const fullPrice = getFullPrice();
 
 // 3. Создаем функцию getTitle
 function getTitle() {
@@ -27,18 +31,18 @@ function getTitle() {
 // 4. Создаем функцию getServicePercentPrices
 function getServicePercentPrices() {
     const contractorPercentage = 10;
-    const contractorCut = getFullPrice() * (contractorPercentage / 100);
-    return Math.round(getFullPrice() - contractorCut);
+    const contractorCut = fullPrice * (contractorPercentage / 100);
+    return Math.round(fullPrice - contractorCut);
 }
 
 // 5. Создаем функцию getRollbackMessage
 function getRollbackMessage() {
     let message;
-    if (getFullPrice() > 50000) {
+    if (fullPrice > 50000) {
         message = "Скидка клиенту: 10%";
-    } else if (getFullPrice() > 20000 && getFullPrice() <= 50000) {
+    } else if (fullPrice > 20000 && fullPrice <= 50000) {
         message = "Скидка клиенту: 5%";
-    } else if (getFullPrice() > 0 && getFullPrice() <= 20000) {
+    } else if (fullPrice > 0 && fullPrice <= 20000) {
         message = "Скидка клиенту не предусмотрена";
     } else {
         message = "Что-то пошло не так";
@@ -47,8 +51,6 @@ function getRollbackMessage() {
 }
 
 // Получаем результаты всех операций
-const allServicePrices = getAllServicePrices();
-const fullPrice = getFullPrice();
 const editedTitle = getTitle();
 const servicePercentPrice = getServicePercentPrices();
 
