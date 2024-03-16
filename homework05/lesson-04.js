@@ -1,71 +1,82 @@
-// Вопросы по проекту
-const titleProject = prompt("Название проекта?").trim();
-const screensValue = prompt("Какой тип экрана?", "Шаблонные, с уникальным дизайном, с анимациями").trim();
-const responsive = confirm("Нужен ли респонсивный сайт?");
-const service1 = prompt("Какой сервис нужен?").trim();
-const servicePrice1 = +prompt("Сколько это будет стоить?").trim();
-const service2 = prompt("Какой еще сервис тебе нужен?").trim();
-const servicePrice2 = +prompt("Сколько будет стоить этот второй сервис?").trim();
-const screenPrice = 12400; // цена реализации одного экрана
-
-// 1. Создаем функцию getAllServicePrices
-const getAllServicePrices = function() {
+// Функция проверки на число
+function isNumeric(value) {
+    return !isNaN(parseFloat(value)) && isFinite(value);
+  }
+  
+  // Валидация ввода стоимости услуг
+  function getValidatedServicePrice(serviceName) {
+    let price;
+    do {
+      price = prompt(`Сколько будет стоить ${serviceName}?`).trim();
+      if (price === null) {
+        // Пользователь отменил ввод
+        console.error("Ввод был отменен.");
+        return null;
+      } else if (!isNumeric(price)) {
+        console.warn ("Необходимо ввести числовое значение! Повторите ввод.");
+      }
+    } while (!isNumeric(price));
+    
+    return Number(price);
+  }
+  
+  // Стартовый скрипт
+  let titleProject = prompt("Название проекта?").trim();
+  let screensValue = prompt("Какой тип экрана?", "Шаблонные, с уникальным дизайном, с анимациями").trim();
+  let responsive = confirm("Нужен ли респонсивный сайт?");
+  let service1 = prompt("Какой сервис нужен?").trim();
+  let servicePrice1 = getValidatedServicePrice("первый сервис");
+  let service2 = prompt("Какой еще сервис тебе нужен?").trim();
+  let servicePrice2 = getValidatedServicePrice("второй сервис");
+  let screenPrice = 12400; // Цена реализации одного экрана
+  
+  // Вычисляемые переменные проекта
+  const getAllServicePrices = function() {
     return servicePrice1 + servicePrice2;
-};
-
-const allServicePrices = getAllServicePrices();
-
-// 2. Создаем функцию getFullPrice
-function getFullPrice() {
+  };
+  
+  const allServicePrices = getAllServicePrices();
+  
+  const getFullPrice = function() {
     return allServicePrices + screenPrice;
-}
-
-const fullPrice = getFullPrice();
-
-// 3. Создаем функцию getTitle
-function getTitle() {
-    // Первый символ в верхний регистр, остальные - в нижний
-    return titleProject.charAt(0).toUpperCase() + titleProject.slice(1).toLowerCase();
-}
-
-// 4. Создаем функцию getServicePercentPrices
-function getServicePercentPrices() {
-    const contractorPercentage = 10;
-    const contractorCut = fullPrice * (contractorPercentage / 100);
-    return Math.round(fullPrice - contractorCut);
-}
-
-// 5. Создаем функцию getRollbackMessage
-function getRollbackMessage() {
-    let message;
-    if (fullPrice > 50000) {
-        message = "Скидка клиенту: 10%";
-    } else if (fullPrice > 20000 && fullPrice <= 50000) {
-        message = "Скидка клиенту: 5%";
-    } else if (fullPrice > 0 && fullPrice <= 20000) {
-        message = "Скидка клиенту не предусмотрена";
+  };
+  
+  const fullPrice = getFullPrice();
+  
+  const getTitle = function(projectName) {
+    return projectName.charAt(0).toUpperCase() + projectName.slice(1).toLowerCase();
+  };
+  
+  const getServicePercentPrices = function(price) {
+    const servicePercent = 0.1;
+    return Math.round(price - price * servicePercent);
+  };
+  
+  const getRollbackMessage = function(price) {
+    if (price >= 30000) {
+      return "Даем скидку в размере 10%";
+    } else if (price >= 15000 && price < 30000) {
+      return "Даем скидку в размере 5%";
     } else {
-        message = "Что-то пошло не так";
+      return "Скидка не предоставляется";
     }
-    console.log(message);
-}
-
-// Получаем результаты всех операций
-const editedTitle = getTitle();
-const servicePercentPrice = getServicePercentPrices();
-
-// Выводим результаты в консоль
-console.log("Название проекта:", editedTitle);
-console.log("Тип экрана:", screensValue);
-console.log("Респонсивный сайт:", responsive);
-console.log("Сервис 1:", service1);
-console.log("Стоимость сервиса 1:", servicePrice1);
-console.log("Сервис 2:", service2);
-console.log("Стоимость сервиса 2:", servicePrice2);
-console.log("Стоимость экрана:", screenPrice);
-console.log("Стоимость всех дополнительных услуг:", allServicePrices);
-console.log("Полная стоимость проекта:", fullPrice);
-console.log("Итоговая стоимость для клиента:", servicePercentPrice);
-
-// Выводим сообщение о скидке клиенту
-getRollbackMessage();
+  };
+  
+  // Получаем результаты всех операций
+  const editedTitle = getTitle(titleProject);
+  const servicePercentPrice = getServicePercentPrices(fullPrice);
+  const rollbackMessage = getRollbackMessage(fullPrice);
+  
+  // Выводим результаты в консоль
+  console.log("Название проекта:", editedTitle);
+  console.log("Тип экрана:", screensValue);
+  console.log("Респонсивный сайт:", responsive ? "Да" : "Нет");
+  console.log("Сервис 1:", service1);
+  console.log("Стоимость сервиса 1:", servicePrice1);
+  console.log("Сервис 2:", service2);
+  console.log("Стоимость сервиса 2:", servicePrice2);
+  console.log("Стоимость экрана:", screenPrice);
+  console.log("Стоимость всех дополнительных услуг:", allServicePrices);
+  console.log("Полная стоимость проекта:", fullPrice);
+  console.log("Итоговая стоимость для клиента:", servicePercentPrice);
+  console.log(rollbackMessage);
